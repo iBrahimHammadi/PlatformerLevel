@@ -4,12 +4,14 @@ pygame.init()
 clock = pygame.time.Clock()
 
 def playerMovement():
-    global player_speed
+    global player_speed, y_vel
     player.x += player_speed
     if player.right >= width:
         player.right = width
     if player.left <= 0:
         player.left = 0
+    if player.colliderect(surface):
+        player.bottom = surface.top
 
 
 #Creating the screen
@@ -19,13 +21,16 @@ pygame.display.set_caption('A Platformer Level')
 
 #Creating the ground
 ground = pygame.Rect(0, 540, width, height)
+
+#Designing the level a little bit
+surface = pygame.Rect(width/2 + 90, 400, 200, 50)
 #Creating the player
 player = pygame.Rect(width/2 - 15, 480, 30, 60 )
 #Player speed and gravity
 jumping = False
 player_speed = 0
 gravity = 1
-jump_height = 20
+jump_height = 17
 y_vel = jump_height
 
 #Colors
@@ -64,5 +69,6 @@ while True:
     #Drawing the ground
     pygame.draw.rect(Screen,(200, 200, 200), ground)
     pygame.draw.rect(Screen,(10, 10, 10), player)
+    pygame.draw.rect(Screen,(0, 10, 79), surface)
     pygame.display.update()
     clock.tick(60)
