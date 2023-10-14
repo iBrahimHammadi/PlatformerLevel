@@ -6,6 +6,11 @@ clock = pygame.time.Clock()
 def playerMovement():
     global player_speed
     player.x += player_speed
+    if player.right >= width:
+        player.right = width
+    if player.left <= 0:
+        player.left = 0
+
 
 #Creating the screen
 width, height = 800, 600
@@ -16,8 +21,12 @@ pygame.display.set_caption('A Platformer Level')
 ground = pygame.Rect(0, 540, width, height)
 #Creating the player
 player = pygame.Rect(width/2 - 15, 480, 30, 60 )
-#Creating the player Speed
+#Player speed and gravity
+jumping = False
 player_speed = 0
+gravity = 1
+jump_height = 20
+y_vel = jump_height
 
 #Colors
 cyan = (0,88,88)
@@ -35,10 +44,19 @@ while True:
                 player_speed -= 5
             if event.key == pygame.K_LEFT:
                 player_speed += 5
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                jumping = True
         
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+    if jumping:
+        player.y -= y_vel
+        y_vel -= gravity
+        if y_vel < -jump_height:
+            jumping = False
+            y_vel = jump_height
 
 
     Screen.fill(cyan)
